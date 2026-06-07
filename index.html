@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlowFit - Acompanhamento de Treinos ABC (PPL)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0f17">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="sidebar">
+            <div>
+                <div class="logo-container">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">GlowFit</div>
+                </div>
+                <nav class="nav-menu">
+                    <div class="nav-item active" data-tab="dashboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                        Painel
+                    </div>
+                    <div class="nav-item" data-tab="exercises">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11M6.5 12h11M6.5 17.5h11"/></svg>
+                        Exercícios
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar">U</div>
+                <div class="user-info">
+                    <h4 id="user-name-display">Atleta</h4>
+                    <p id="user-level">Foco & Constância</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="mobile-nav">
+            <a href="#" class="mobile-nav-item active" data-tab="dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                <span>Painel</span>
+            </a>
+            <a href="#" class="mobile-nav-item" data-tab="exercises">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M6.5 12h11M6.5 17.5h11"/></svg>
+                <span>Exercícios</span>
+            </a>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            
+            <!-- DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-content active">
+                <header class="content-header">
+                    <div class="header-title">
+                        <h1>Olá, Campeão! 👋</h1>
+                        <p>Pronto para esmagar as metas de hoje?</p>
+                    </div>
+                </header>
+
+                <!-- Sugestão do Dia & Planner Semanal (Mon-Fri optimization) -->
+                <div class="card sugestao-card muscle-map-card">
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Otimizador Diário (Seg-Sex)</span>
+                        <h3 style="font-size: 1.6rem; font-weight: 800; margin-top: 0.25rem;" id="daily-suggestion-text">Recomendação: Carregando...</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem; margin-bottom: 1rem;">Com base no seu histórico rolável, este é o próximo treino do seu ciclo ABC.</p>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn btn-primary" id="btn-start-suggested" onclick="app.focusSuggestedWorkout()">Ver Treino </button>
+                            <button class="btn btn-secondary" onclick="app.markSuggestedWorkoutDone()">Marcar como Feito ✅</button>
+                        </div>
+                    </div>
+                    <div class="muscle-map-container" id="dashboard-muscle-map-container">
+                        <!-- Rendered by app.js -->
+                    </div>
+                </div>
+
+                <div class="card planner-card">
+                    <h3 style="font-weight: 600;">Cronograma de Segunda a Sexta</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">Acompanhe o fluxo rolável do seu ABC de segunda a sexta. Treinos planejados para esta semana:</p>
+                    <div class="planner-grid" id="planner-days-container">
+                        <!-- Loaded dynamically in app.js -->
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 2rem; margin-bottom: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;" id="workout-section-title">
+                     Foco do Treino
+                </h2>
+                
+                <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem;" class="routine-tab-selector">
+                    <button class="btn btn-primary btn-routine-tab active" onclick="app.selectRoutineTab('Push')" id="tab-btn-Push" style="flex: 1; min-width: 120px;">Treino A (Push)</button>
+                    <button class="btn btn-secondary btn-routine-tab" onclick="app.selectRoutineTab('Pull')" id="tab-btn-Pull" style="flex: 1; min-width: 120px;">Treino B (Pull)</button>
+                    <button class="btn btn-secondary btn-routine-tab" onclick="app.selectRoutineTab('Legs')" id="tab-btn-Legs" style="flex: 1; min-width: 120px;">Treino C (Legs)</button>
+                </div>
+
+                <div class="workout-meta-layout" style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: flex-start;">
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div id="routine-exercises-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <!-- Loaded dynamically from app.js -->
+                        </div>
+                        <button class="btn btn-secondary" onclick="app.openAddExerciseToRoutineModal()" style="width: 100%; border: 1px dashed var(--border-color); background: rgba(30, 41, 59, 0.2); padding: 1rem; border-radius: var(--radius-md); font-weight: 600;">+ Adicionar Exercício ao Treino</button>
+                    </div>
+                    <div class="desktop-only-map" style="display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 20px;">
+                        <div class="card" style="padding: 1.5rem; background: var(--bg-card);">
+                            <h3 style="font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">Músculos Alvo</h3>
+                            <div class="muscle-map-container" id="routine-muscle-map-container">
+                                <!-- Rendered by app.js -->
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 0.8rem; text-align: center; margin-top: 1rem;">
+                                Músculos alvos do treino selecionado estão destacados.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISES TAB -->
+            <div id="tab-exercises" class="tab-content">
+                <header class="content-header">
+                    <div class="header-title">
+                        <h1 style="display: flex; align-items: center; flex-wrap: wrap;">Banco de Exercícios <span id="db-total-count" style="font-size: 0.9rem; color: var(--color-accent); font-weight: normal; background: rgba(34, 197, 94, 0.15); padding: 0.25rem 0.6rem; border-radius: var(--radius-sm); margin-left: 0.75rem; border: 1px solid rgba(34, 197, 94, 0.3);">Carregando...</span></h1>
+                        <p>Gerencie seus exercícios para cada tipo de treino.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="app.openNewExerciseModal()">+ Criar Exercício</button>
+                </header>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; width: 100%;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <input type="text" id="search-exercise-db" placeholder="Buscar exercício no banco de movimentos..." oninput="app.filterExercises()" style="width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: rgba(30, 41, 59, 0.4); color: var(--text-primary); box-sizing: border-box; font-size: 0.95rem;">
+                    </div>
+                    <div style="width: 150px; min-width: 120px;">
+                        <select id="filter-exercise-category" onchange="app.filterExercises()" style="width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #1e293b; color: var(--text-primary); box-sizing: border-box; font-size: 0.95rem;">
+                            <option value="">Todos Treinos</option>
+                            <option value="Push">Push</option>
+                            <option value="Pull">Pull</option>
+                            <option value="Legs">Legs</option>
+                        </select>
+                    </div>
+                    <div style="width: 180px; min-width: 140px;">
+                        <select id="filter-exercise-target" onchange="app.filterExercises()" style="width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #1e293b; color: var(--text-primary); box-sizing: border-box; font-size: 0.95rem;">
+                            <option value="">Todos Músculos</option>
+                            <option value="peito">Peito</option>
+                            <option value="costas">Costas</option>
+                            <option value="biceps">Bíceps</option>
+                            <option value="triceps">Tríceps</option>
+                            <option value="ombros">Ombros</option>
+                            <option value="quadriceps">Quadríceps</option>
+                            <option value="posteriores">Posteriores</option>
+                            <option value="panturrilha">Panturrilha</option>
+                            <option value="geral">Geral/Outros</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="exercise-list-grid" id="exercises-container">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Rest Timer Overlay (Visual toast modal) -->
+    <div id="rest-timer-overlay" style="display: none; position: fixed; bottom: 20px; right: 20px; background: rgba(15, 23, 42, 0.95); border: 2px solid var(--color-accent); border-radius: var(--radius-md); padding: 1.5rem; z-index: 2000; box-shadow: var(--shadow-lg); width: 250px; text-align: center; backdrop-filter: blur(12px);">
+        <h4 style="margin-bottom: 0.5rem; font-weight: 600;">Tempo de Descanso</h4>
+        <div id="rest-timer-countdown" style="font-size: 2rem; font-weight: 800; color: var(--color-accent); font-family: monospace; margin-bottom: 0.5rem;">60</div>
+        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+            <button class="btn btn-secondary" onclick="app.adjustRestTimer(-15)" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">-15s</button>
+            <button class="btn btn-secondary" onclick="app.adjustRestTimer(15)" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">+15s</button>
+            <button class="btn btn-danger" onclick="app.skipRestTimer()" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Pular</button>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD CUSTOM EXERCISE -->
+    <div class="modal-backdrop" id="new-exercise-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-weight: 700;">Novo Exercício</h3>
+                <button class="btn btn-secondary" onclick="app.closeModal('new-exercise-modal')" style="padding: 0.25rem 0.5rem; min-width: auto; border: none; background: transparent;">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="new-exercise-name">Nome do Exercício</label>
+                    <input type="text" id="new-exercise-name" placeholder="Ex: Supino Reto com Halteres" list="exercise-suggestions">
+                    <datalist id="exercise-suggestions"></datalist>
+                </div>
+                <div class="form-group">
+                    <label for="new-exercise-split">Treino Relacionado</label>
+                    <select id="new-exercise-split">
+                        <option value="Push">Push (Empurrar)</option>
+                        <option value="Pull">Pull (Puxar)</option>
+                        <option value="Legs">Legs (Pernas)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="app.closeModal('new-exercise-modal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="app.saveNewExercise()">Salvar Exercício</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD EXERCISE TO ACTIVE WORKOUT -->
+    <div class="modal-backdrop" id="add-exercise-to-workout-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-weight: 700;">Adicionar Exercício ao Treino</h3>
+                <button class="btn btn-secondary" onclick="app.closeModal('add-exercise-to-workout-modal')" style="padding: 0.25rem 0.5rem; min-width: auto; border: none; background: transparent;">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="select-exercise-to-add">Escolha o Exercício</label>
+                    <select id="select-exercise-to-add">
+                        <!-- Loaded dynamically -->
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="app.closeModal('add-exercise-to-workout-modal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="app.addSelectedExerciseToSession()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EXERCISE DEMONSTRATION GRAPHICS -->
+    <div class="modal-backdrop" id="exercise-demo-modal">
+        <div class="modal-container" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3 style="font-weight: 700;" id="demo-modal-title">Execução do Exercício</h3>
+                <button class="btn btn-secondary" onclick="app.closeModal('exercise-demo-modal')" style="padding: 0.25rem 0.5rem; min-width: auto; border: none; background: transparent;">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-animation-container" id="demo-modal-animation-box">
+                    <!-- Dynamic CSS-Animated SVG rendered here -->
+                </div>
+                <div id="demo-modal-details">
+                    <!-- Instruction tips -->
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="app.closeModal('exercise-demo-modal')" style="width: 100%;">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SUBSTITUTE EXERCISE IN ACTIVE WORKOUT -->
+    <div class="modal-backdrop" id="substitute-exercise-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-weight: 700;">Substituir Exercício</h3>
+                <button class="btn btn-secondary" onclick="app.closeModal('substitute-exercise-modal')" style="padding: 0.25rem 0.5rem; min-width: auto; border: none; background: transparent;">X</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem;">Substituindo: <strong id="substitute-origin-name">...</strong></p>
+                <div class="form-group">
+                    <label for="select-exercise-to-substitute">Escolha o Substituto</label>
+                    <select id="select-exercise-to-substitute" style="width: 100%; background: #1e293b; border: 1px solid var(--border-color); color: white; padding: 0.5rem; border-radius: 6px; font-weight: 600;">
+                        <!-- Loaded dynamically -->
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="app.closeModal('substitute-exercise-modal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="app.executeExerciseSubstitution()">Confirmar Substituição</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

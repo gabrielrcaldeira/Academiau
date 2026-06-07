@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: io.coil-kt:coil-gif:2.7.0@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/9.5.1/transforms/2486229a7c8716ffeb3c566bcab87158/transformed/jetified-coil-gif-2.7.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/9.5.1/transforms/2486229a7c8716ffeb3c566bcab87158/transformed/jetified-coil-gif-2.7.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.coil-kt/coil-gif/2.7.0/db6a83ac4c598bc6827e83b5b98de26df618b9e3/coil-gif-2.7.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.coil-kt/coil-gif/2.7.0/70f1aa6264979b45ce1d1c4b764c3ffda4ca6f1c/coil-gif-2.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

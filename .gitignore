@@ -1,0 +1,4 @@
+glowfit.zip
+*.py
+__pycache__/
+.DS_Store
