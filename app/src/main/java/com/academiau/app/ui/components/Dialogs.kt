@@ -29,8 +29,10 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.academiau.app.data.Exercise
 import com.academiau.app.data.AcademiauRepository
+import com.academiau.app.data.WorkoutSession
 import com.academiau.app.ui.theme.*
-import java.util.Locale
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun ExerciseTipsDialog(
@@ -168,12 +170,12 @@ fun ExerciseTipsDialog(
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    // GIF display
+                    // GIF display (Compact and Proportional)
                     if (gifPath != null) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
+                                .height(140.dp)
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(BgCard)
                                 .border(1.dp, BorderColor, RoundedCornerShape(8.dp)),
@@ -186,7 +188,7 @@ fun ExerciseTipsDialog(
                                 ),
                                 contentDescription = exerciseName,
                                 contentScale = ContentScale.Fit,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier.fillMaxSize().padding(12.dp)
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))

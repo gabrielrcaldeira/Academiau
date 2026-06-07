@@ -28,3 +28,21 @@ data class Routine(
     val pull: List<String>,
     val legs: List<String>
 )
+
+data class SetRecord(
+    val weight: Double,
+    val reps: Int
+)
+
+data class ExerciseSession(
+    val exerciseName: String,
+    val sets: List<SetRecord>
+)
+
+data class WorkoutSession(
+    val id: String,
+    val type: String, // Push, Pull, Legs
+    val durationMillis: Long,
+    val timestamp: Long,
+    val exercises: List<ExerciseSession> = emptyList()
+)
